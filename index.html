@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3ª Corrida do 3º BPM - Gerador de Card</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- PAINEL -->
+        <aside class="sidebar">
+
+            <img src="assets/img/logo.png" class="logo" alt="Logo">
+
+            <h1>Gerador de Card</h1>
+
+            <p>
+                Gere seu card oficial da
+                <strong>3ª Corrida do 3º BPM</strong>
+            </p>
+
+            <div class="upload-area" id="uploadArea">
+                <input type="file" id="photoInput" accept="image/*" hidden>
+                <span>📷</span>
+                <h3>Selecionar foto</h3>
+                <small>Clique aqui</small>
+            </div>
+
+            <label>
+                Nome
+                <input id="nameInput" maxlength="40" placeholder="Digite seu nome">
+            </label>
+
+            <label>
+                Categoria
+                <select id="categoryInput">
+                    <option>5 km feminino</option>
+                    <option>10 km feminino</option>
+                    <option>5 km masculino</option>
+                    <option>10 km masculino</option>
+                </select>
+            </label>
+
+            <button id="downloadButton">Gerar Card</button>
+
+        </aside>
+
+        <!-- PREVIEW -->
+        <main class="preview-area">
+            <div id="card">
+                <img src="assets/img/card.png" id="background">
+                <div id="photoFrame">
+                    <img id="photo">
+                </div>
+                <div id="namePreview">NOME DO ATLETA</div>
+                <div id="categoryPreview">CATEGORIA</div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Scripts: ordem importa -->
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/cropper.js"></script>
+    <script src="assets/js/canvas.js"></script>
+
+</body>
+
+</html>
