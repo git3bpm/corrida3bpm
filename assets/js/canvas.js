@@ -60,34 +60,41 @@ async function gerarCard() {
         canvas.width = bgImage.naturalWidth;
         canvas.height = bgImage.naturalHeight;
 
-        // 1) Desenha foto (por trás) com ajuste do usuário
+        // 1) Preenche área de recorte antiga do card (fundo escuro)
+        const oldPhotoLeft = 71, oldPhotoTop = 381, oldPhotoW = 938, oldPhotoH = 1194;
+        ctx.fillStyle = "#14101a";
+        ctx.fillRect(oldPhotoLeft, oldPhotoTop, oldPhotoW, oldPhotoH);
+
+        // 2) Desenha foto com ajuste do usuário
         const frameX = CARD.photo.left;
         const frameY = CARD.photo.top;
         const frameW = CARD.photo.width;
         const frameH = CARD.photo.height;
 
-        const temAjuste = photoTransform && photoTransform.initialScale > 0;
-
-        if (photo.src && photo.complete && photo.naturalWidth > 0 && temAjuste) {
+        if (photo.src && photo.complete && photo.naturalWidth > 0) {
             ctx.save();
             ctx.beginPath();
             ctx.rect(frameX, frameY, frameW, frameH);
             ctx.clip();
 
-            const s = photoTransform.scale;
-            const srcX = -photoTransform.tx / s;
-            const srcY = -photoTransform.ty / s;
-            const srcW = frameW / s;
-            const srcH = frameH / s;
-
-            ctx.drawImage(photo, srcX, srcY, srcW, srcH, frameX, frameY, frameW, frameH);
+            if (photoTransform && photoTransform.initialScale > 0) {
+                const s = photoTransform.scale;
+                const srcX = -photoTransform.tx / s;
+                const srcY = -photoTransform.ty / s;
+                const srcW = frameW / s;
+                const srcH = frameH / s;
+                ctx.drawImage(photo, srcX, srcY, srcW, srcH, frameX, frameY, frameW, frameH);
+            } else {
+                // Fallback: centraliza a foto no quadro
+                const s = Math.max(frameW / photo.naturalWidth, frameH / photo.naturalHeight);
+                const dw = photo.naturalWidth * s;
+                const dh = photo.naturalHeight * s;
+                const dx = frameX + (frameW - dw) / 2;
+                const dy = frameY + (frameH - dh) / 2;
+                ctx.drawImage(photo, 0, 0, photo.naturalWidth, photo.naturalHeight, dx, dy, dw, dh);
+            }
             ctx.restore();
         }
-
-        // 2) Preenche área de recorte antiga do card (para não vazar transparência)
-        const oldPhotoLeft = 71, oldPhotoTop = 381, oldPhotoW = 938, oldPhotoH = 1194;
-        ctx.fillStyle = "#14101a";
-        ctx.fillRect(oldPhotoLeft, oldPhotoTop, oldPhotoW, oldPhotoH);
 
         // 3) Desenha moldura por cima
         ctx.drawImage(bgImage, 0, 0);
