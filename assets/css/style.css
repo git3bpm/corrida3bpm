@@ -240,6 +240,8 @@ button:hover {
 
     -webkit-user-drag: none;
 
+    pointer-events: none;
+
 }
 
 #namePreview {

@@ -173,6 +173,11 @@ function ativarControles() {
 }
 
 function onMouseDown(e) {
+    const rect = photoFrame.getBoundingClientRect();
+    if (e.clientX < rect.left || e.clientX > rect.right ||
+        e.clientY < rect.top || e.clientY > rect.bottom) {
+        return;
+    }
     isDragging = true;
     lastX = e.clientX; lastY = e.clientY;
     photoFrame.style.cursor = "grabbing";
@@ -199,6 +204,14 @@ function onMouseUp() {
 }
 
 function onTouchStart(e) {
+    // Ignora toques fora dos limites visíveis do photoFrame
+    const rect = photoFrame.getBoundingClientRect();
+    const touch = e.touches[0];
+    if (touch.clientX < rect.left || touch.clientX > rect.right ||
+        touch.clientY < rect.top || touch.clientY > rect.bottom) {
+        return;
+    }
+
     if (e.touches.length === 1) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
