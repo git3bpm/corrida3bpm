@@ -31,7 +31,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
 });
 
-window.addEventListener("resize", configurarPosicoes);
+window.addEventListener("resize", () => {
+    configurarPosicoes();
+    atualizarNome();
+    atualizarCategoria();
+});
 
 // -------------------------------
 // Escala responsiva (largura real do card)
@@ -59,7 +63,6 @@ function configurarPosicoes() {
     namePreview.style.left = (nameCenterX - nameW / 2) + "px";
     namePreview.style.top = CARD.name.top * esc + "px";
     namePreview.style.width = nameW + "px";
-    namePreview.style.fontSize = CARD.name.size * esc + "px";
 
     // CATEGORIA (centrado)
     const catCenterX = CARD.category.left * esc;
@@ -67,7 +70,6 @@ function configurarPosicoes() {
     categoryPreview.style.left = (catCenterX - catW / 2) + "px";
     categoryPreview.style.top = CARD.category.top * esc + "px";
     categoryPreview.style.width = catW + "px";
-    categoryPreview.style.fontSize = CARD.category.size * esc + "px";
 
 }
 
