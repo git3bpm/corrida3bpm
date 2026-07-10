@@ -84,7 +84,12 @@ async function gerarCard() {
             ctx.restore();
         }
 
-        // 2) Desenha moldura por cima
+        // 2) Preenche área de recorte antiga do card (para não vazar transparência)
+        const oldPhotoLeft = 71, oldPhotoTop = 381, oldPhotoW = 938, oldPhotoH = 1194;
+        ctx.fillStyle = "#14101a";
+        ctx.fillRect(oldPhotoLeft, oldPhotoTop, oldPhotoW, oldPhotoH);
+
+        // 3) Desenha moldura por cima
         ctx.drawImage(bgImage, 0, 0);
 
         // 3) Desenha nome
