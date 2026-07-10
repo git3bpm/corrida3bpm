@@ -6,9 +6,6 @@
 const photoTransform = { scale: 1, tx: 0, ty: 0, initialScale: 1 };
 let cropper = null;
 
-// Remove handler antigo do app.js
-photoInput.removeEventListener("change", carregarImagem);
-
 // ---- MODAL DO CROPPER ----
 function criarModalCropper() {
     const modal = document.createElement("div");
@@ -53,22 +50,34 @@ criarModalCropper();
 function abrirCropper(dataURL) {
     const modal = document.getElementById("cropperModal");
     const img = document.getElementById("cropperImage");
+
+    img.onerror = function () {
+        fecharCropper();
+        alert("Não foi possível abrir essa imagem. Verifique se o arquivo é uma foto válida (JPG, PNG, etc.) e tente novamente.");
+    };
+
     modal.style.display = "block";
     img.src = dataURL;
 
     if (cropper) cropper.destroy();
 
-    cropper = new Cropper(img, {
-        aspectRatio: CARD.photo.width / CARD.photo.height,
-        viewMode: 1,
-        dragMode: "move",
-        background: false,
-        responsive: true,
-        autoCropArea: 1,
-        guides: false,
-        highlight: false,
-        cropBoxResizable: true,
-    });
+    try {
+        cropper = new Cropper(img, {
+            aspectRatio: CARD.photo.width / CARD.photo.height,
+            viewMode: 1,
+            dragMode: "move",
+            background: false,
+            responsive: true,
+            autoCropArea: 1,
+            guides: false,
+            highlight: false,
+            cropBoxResizable: true,
+        });
+    } catch (err) {
+        console.error("Erro ao iniciar o recorte:", err);
+        fecharCropper();
+        alert("Não foi possível processar essa imagem. Tente outra foto.");
+    }
 }
 
 function fecharCropper() {
@@ -94,14 +103,34 @@ function confirmarRecorte() {
 }
 
 // ---- UPLOAD ----
+const TAMANHO_MAXIMO_MB = 20;
+
 photoInput.addEventListener("change", function (event) {
     const arquivo = event.target.files[0];
+    photoInput.value = ""; // permite selecionar o mesmo arquivo de novo depois
+
     if (!arquivo) return;
 
+    if (!arquivo.type.startsWith("image/")) {
+        alert("Selecione um arquivo de imagem válido (JPG, PNG, etc.).");
+        return;
+    }
+
+    if (arquivo.size > TAMANHO_MAXIMO_MB * 1024 * 1024) {
+        alert(`A imagem é muito grande (máximo ${TAMANHO_MAXIMO_MB}MB). Selecione uma foto menor.`);
+        return;
+    }
+
     const reader = new FileReader();
+
+    reader.onerror = function () {
+        alert("Não foi possível ler o arquivo selecionado. Tente novamente.");
+    };
+
     reader.onload = function (e) {
         abrirCropper(e.target.result);
     };
+
     reader.readAsDataURL(arquivo);
 });
 

@@ -83,57 +83,10 @@ uploadArea.addEventListener("click", () => {
 // -------------------------------
 // Upload da foto
 // -------------------------------
-photoInput.addEventListener("change", carregarImagem);
-
-function carregarImagem(event) {
-
-    const arquivo = event.target.files[0];
-
-    if (!arquivo)
-        return;
-
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-
-        photo.src = e.target.result;
-
-        ajustarFoto();
-
-    };
-
-    reader.readAsDataURL(arquivo);
-
-}
-
-// -------------------------------
-// Ajusta foto dentro da moldura
-// -------------------------------
-function ajustarFoto() {
-
-    photo.onload = function () {
-
-        const esc = getEsc();
-        const frameW = CARD.photo.width * esc;
-        const frameH = CARD.photo.height * esc;
-
-        const imgW = photo.naturalWidth;
-        const imgH = photo.naturalHeight;
-
-        const escala = Math.max(frameW / imgW, frameH / imgH);
-
-        const novaLargura = imgW * escala;
-        const novaAltura = imgH * escala;
-
-        photo.style.width = novaLargura + "px";
-        photo.style.height = novaAltura + "px";
-
-        photo.style.left = ((frameW - novaLargura) / 2) + "px";
-        photo.style.top = ((frameH - novaAltura) / 2) + "px";
-
-    };
-
-}
+// Observação: o carregamento e recorte da foto é tratado inteiramente
+// pelo cropper.js (que assume o listener "change" do input assim que
+// é carregado). O fluxo antigo baseado em carregarImagem()/ajustarFoto()
+// foi removido daqui por estar morto/nunca executado.
 
 // -------------------------------
 // Nome
@@ -174,10 +127,13 @@ function ajustarFontePreview(elemento, texto, fontSize, maxWidth, weight) {
     elemento.style.fontSize = (fontSize * esc) + "px";
 
     let size = fontSize * esc;
+    // Mesmo piso (10px em escala real) usado em canvas.js/desenharTextoAuto,
+    // para o preview não divergir do card final gerado.
+    const tamanhoMinimo = 10 * esc;
     const wsOriginal = elemento.style.whiteSpace;
     elemento.style.whiteSpace = "nowrap";
 
-    while (elemento.scrollWidth > largura + 1 && size > 6) {
+    while (elemento.scrollWidth > largura + 1 && size > tamanhoMinimo) {
         size--;
         elemento.style.fontSize = size + "px";
     }

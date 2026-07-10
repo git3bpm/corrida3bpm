@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' https://cdn.jsdelivr.net; font-src 'self'; connect-src 'self';">
     <title>3ª Corrida do 3º BPM - Gerador de Card</title>
+    <link rel="icon" href="assets/img/logo.png" type="image/png">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css"
+        integrity="sha384-6LFfkTKLRlzFtgx8xsWyBdKGpcMMQTkv+dB7rAbugeJAu1Ym2q1Aji1cjHBG12Xh"
+        crossorigin="anonymous">
 </head>
 
 <body>
@@ -26,7 +31,7 @@
             </p>
 
             <div class="upload-area" id="uploadArea">
-                <input type="file" id="photoInput" accept="image/*" hidden>
+                <input type="file" id="photoInput" accept="image/*" capture="environment" hidden>
                 <span>📷</span>
                 <h3>Selecionar foto</h3>
                 <small>Clique aqui</small>
@@ -66,7 +71,9 @@
     </div>
 
     <!-- Scripts: ordem importa -->
-    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"
+        integrity="sha384-jrOgQzBlDeUNdmQn3rUt/PZD+pdcRBdWd/HWRqRo+n2OR2QtGyjSaJC0GiCeH+ir"
+        crossorigin="anonymous"></script>
     <script src="assets/js/config.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/cropper.js"></script>
