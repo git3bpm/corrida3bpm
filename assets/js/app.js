@@ -135,6 +135,7 @@ function ajustarFontePreview(elemento, texto, fontSize, maxWidth, weight) {
     while (elemento.scrollWidth > largura + 1 && size > tamanhoMinimo) {
         size--;
         elemento.style.fontSize = size + "px";
+        elemento.offsetHeight; // força reflow para scrollWidth atualizar no mobile
     }
 
 }
