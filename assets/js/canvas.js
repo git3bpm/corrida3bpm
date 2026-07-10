@@ -106,12 +106,30 @@ async function gerarCard() {
         desenharTextoAuto(ctx, categoria.toUpperCase(), CARD.category.left, CARD.category.top, CARD.category.width, CARD.category.size, "#ffd54a", `bold`, `HemiHead, "Segoe UI", Arial, sans-serif`);
 
         // 5) Download
-        const dataURL = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
         const nomeArquivo = nome.toLowerCase()
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-            .replace(/\s+/g, "-");
-        link.download = "card-" + nomeArquivo + ".png";
+            .replace(/\s+/g, "-") + ".png";
+
+        // No iOS o download via link não funciona. Usa navigator.share se disponível.
+        if (navigator.share && navigator.canShare) {
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+            const file = new File([blob], nomeArquivo, { type: "image/png" });
+            if (navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({ files: [file], title: "Card " + nome });
+                } catch (_) {
+                    // usuário cancelou a sheet — não é erro
+                }
+                downloadButton.disabled = false;
+                downloadButton.textContent = "Gerar Card";
+                return;
+            }
+        }
+
+        // Fallback: download via link (desktop / Android)
+        const dataURL = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.download = nomeArquivo;
         link.href = dataURL;
         link.click();
 
