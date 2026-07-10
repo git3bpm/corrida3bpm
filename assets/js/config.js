@@ -6,11 +6,11 @@ const CARD = {
 
         left: 138,
 
-        top: 594,
+        top: 503,
 
         width: 804,
 
-        height: 767
+        height: 751
 
     },
 
