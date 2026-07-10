@@ -260,6 +260,8 @@ button:hover {
 
     z-index: 3;
 
+    white-space: nowrap;
+
     font-family: 'HemiHead', 'Segoe UI', sans-serif;
 
 }
@@ -277,6 +279,8 @@ button:hover {
     text-transform: uppercase;
 
     z-index: 3;
+
+    white-space: nowrap;
 
     font-family: 'HemiHead', 'Segoe UI', sans-serif;
 

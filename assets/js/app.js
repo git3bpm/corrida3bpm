@@ -125,19 +125,14 @@ function ajustarFontePreview(elemento, texto, fontSize, maxWidth, weight) {
 
     elemento.textContent = texto.toUpperCase();
     elemento.style.fontSize = (fontSize * esc) + "px";
+    elemento.style.whiteSpace = "nowrap";
 
     let size = fontSize * esc;
-    // Mesmo piso (10px em escala real) usado em canvas.js/desenharTextoAuto,
-    // para o preview não divergir do card final gerado.
     const tamanhoMinimo = 10 * esc;
-    const wsOriginal = elemento.style.whiteSpace;
-    elemento.style.whiteSpace = "nowrap";
 
     while (elemento.scrollWidth > largura + 1 && size > tamanhoMinimo) {
         size--;
         elemento.style.fontSize = size + "px";
     }
-
-    elemento.style.whiteSpace = wsOriginal;
 
 }
