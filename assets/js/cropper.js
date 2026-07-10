@@ -106,11 +106,9 @@ function confirmarRecorte() {
         const url = URL.createObjectURL(blob);
         photo.onload = function () {
             iniciarAjuste();
-            URL.revokeObjectURL(url);
         };
         photo.onerror = function () {
             alert("Erro ao carregar a foto recortada.");
-            URL.revokeObjectURL(url);
         };
         photo.src = url;
     }, "image/png");
