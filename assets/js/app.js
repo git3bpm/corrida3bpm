@@ -31,10 +31,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
 });
 
+let resizeTimer;
 window.addEventListener("resize", () => {
-    configurarPosicoes();
-    atualizarNome();
-    atualizarCategoria();
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        configurarPosicoes();
+        ajustarFontePreview(namePreview, nameInput.value.trim() || "NOME DO ATLETA", CARD.name.size, CARD.name.width, "italic bold");
+        ajustarFontePreview(categoryPreview, categoryInput.value, CARD.category.size, CARD.category.width, "bold");
+    }, 150);
 });
 
 // -------------------------------
