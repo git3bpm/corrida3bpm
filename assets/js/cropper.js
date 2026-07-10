@@ -89,17 +89,31 @@ function confirmarRecorte() {
     if (!cropper) return;
 
     const canvasRecorte = cropper.getCroppedCanvas({
-        width: CARD.photo.width * 2,
-        height: CARD.photo.height * 2,
+        width: CARD.photo.width,
+        height: CARD.photo.height,
         imageSmoothingEnabled: true,
         imageSmoothingQuality: "high",
     });
 
     fecharCropper();
 
-    // Carrega a imagem recortada no card e ativa ajuste
-    photo.onload = iniciarAjuste;
-    photo.src = canvasRecorte.toDataURL("image/png");
+    // Usa blob URL (mais leve que data URL, especialmente no celular)
+    canvasRecorte.toBlob(function (blob) {
+        if (!blob) {
+            alert("Erro ao processar a foto. Tente novamente.");
+            return;
+        }
+        const url = URL.createObjectURL(blob);
+        photo.onload = function () {
+            iniciarAjuste();
+            URL.revokeObjectURL(url);
+        };
+        photo.onerror = function () {
+            alert("Erro ao carregar a foto recortada.");
+            URL.revokeObjectURL(url);
+        };
+        photo.src = url;
+    }, "image/png");
 }
 
 // ---- UPLOAD ----
