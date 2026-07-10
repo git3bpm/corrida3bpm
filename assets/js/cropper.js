@@ -219,9 +219,9 @@ function onTouchMove(e) {
         const dx = Math.abs(e.touches[0].clientX - touchStartX);
         const dy = Math.abs(e.touches[0].clientY - touchStartY);
 
-        // Só ativa arrasto horizontal acima do limiar (permite rolagem vertical)
+        // Só ativa arrasto acima do limiar (evita conflito com scroll)
         if (!isDragging) {
-            if (dx > 10 && dx > dy) {
+            if (dx > 10 || dy > 10) {
                 e.preventDefault();
                 isDragging = true;
                 // Move a foto pela distância acumulada até o limiar
