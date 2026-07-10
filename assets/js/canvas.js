@@ -110,23 +110,22 @@ async function gerarCard() {
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
             .replace(/\s+/g, "-") + ".png";
 
-        // No iOS o download via link não funciona. Usa navigator.share se disponível.
-        if (navigator.share && navigator.canShare) {
+        // iOS não permite download forçado. Usa share sheet para salvar na galeria.
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        if (isIOS && navigator.share && navigator.canShare) {
             const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
             const file = new File([blob], nomeArquivo, { type: "image/png" });
             if (navigator.canShare({ files: [file] })) {
                 try {
                     await navigator.share({ files: [file], title: "Card " + nome });
-                } catch (_) {
-                    // usuário cancelou a sheet — não é erro
-                }
+                } catch (_) { }
                 downloadButton.disabled = false;
                 downloadButton.textContent = "Gerar Card";
                 return;
             }
         }
 
-        // Fallback: download via link (desktop / Android)
+        // Android / Desktop: download direto
         const dataURL = canvas.toDataURL("image/png");
         const link = document.createElement("a");
         link.download = nomeArquivo;
