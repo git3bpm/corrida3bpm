@@ -222,7 +222,7 @@ button:hover {
 
     z-index: 1;
 
-    touch-action: none;
+    touch-action: pan-y pinch-zoom;
 
 }
 

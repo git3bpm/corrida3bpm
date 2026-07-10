@@ -129,8 +129,8 @@ function iniciarAjuste() {
 }
 
 function aplicarTransform() {
-    const esc = 380 / CARD.width;
-    const s = photoTransform.scale * esc; // escala no espaço do preview
+    const esc = getEsc();
+    const s = photoTransform.scale * esc;
     const tx = photoTransform.tx * esc;
     const ty = photoTransform.ty * esc;
 
@@ -155,6 +155,7 @@ function aplicarTransform() {
 // ---- CONTROLES ----
 let isDragging = false;
 let lastX = 0, lastY = 0;
+let touchStartX = 0, touchStartY = 0;
 let lastTouchDist = 0, lastScale = 1;
 
 function ativarControles() {
@@ -179,7 +180,7 @@ function onMouseDown(e) {
 
 function onMouseMove(e) {
     if (!isDragging) return;
-    const esc = 380 / CARD.width;
+    const esc = getEsc();
     const dx = e.clientX - lastX;
     const dy = e.clientY - lastY;
 
@@ -198,30 +199,52 @@ function onMouseUp() {
 }
 
 function onTouchStart(e) {
-    e.preventDefault();
     if (e.touches.length === 1) {
-        isDragging = true;
-        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
-    } else if (e.touches.length === 2) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        lastX = e.touches[0].clientX;
+        lastY = e.touches[0].clientY;
         isDragging = false;
+    } else if (e.touches.length === 2) {
+        e.preventDefault();
         lastTouchDist = dist(e.touches[0], e.touches[1]);
         lastScale = photoTransform.scale;
+        isDragging = false;
     }
 }
 
 function onTouchMove(e) {
-    e.preventDefault();
-    const esc = 380 / CARD.width;
-    if (e.touches.length === 1 && isDragging) {
+    const esc = getEsc();
+    if (e.touches.length === 1) {
+        const dx = Math.abs(e.touches[0].clientX - touchStartX);
+        const dy = Math.abs(e.touches[0].clientY - touchStartY);
+
+        // Só ativa arrasto horizontal acima do limiar (permite rolagem vertical)
+        if (!isDragging) {
+            if (dx > 10 && dx > dy) {
+                e.preventDefault();
+                isDragging = true;
+                // Move a foto pela distância acumulada até o limiar
+                photoTransform.tx += (e.touches[0].clientX - lastX) / esc;
+                photoTransform.ty += (e.touches[0].clientY - lastY) / esc;
+                lastX = e.touches[0].clientX;
+                lastY = e.touches[0].clientY;
+                aplicarTransform();
+            }
+            return;
+        }
+
+        e.preventDefault();
         photoTransform.tx += (e.touches[0].clientX - lastX) / esc;
         photoTransform.ty += (e.touches[0].clientY - lastY) / esc;
-        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+        lastX = e.touches[0].clientX;
+        lastY = e.touches[0].clientY;
         aplicarTransform();
     } else if (e.touches.length === 2) {
+        e.preventDefault();
         const distAtual = dist(e.touches[0], e.touches[1]);
         const fator = distAtual / lastTouchDist;
         photoTransform.scale = lastScale * fator;
-        // tx/ty mantidos — centralização é recalculada em aplicarTransform
         aplicarTransform();
     }
 }

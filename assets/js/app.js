@@ -16,6 +16,7 @@ const namePreview = document.getElementById("namePreview");
 const categoryPreview = document.getElementById("categoryPreview");
 
 const photoFrame = document.getElementById("photoFrame");
+const cardPreview = document.getElementById("card");
 
 // -------------------------------
 // Inicialização
@@ -30,12 +31,21 @@ window.addEventListener("DOMContentLoaded", () => {
 
 });
 
+window.addEventListener("resize", configurarPosicoes);
+
+// -------------------------------
+// Escala responsiva (largura real do card)
+// -------------------------------
+function getEsc() {
+    return (cardPreview.offsetWidth || 380) / CARD.width;
+}
+
 // -------------------------------
 // Configura posições usando config.js
 // -------------------------------
 function configurarPosicoes() {
 
-    const esc = 380 / CARD.width;
+    const esc = getEsc();
 
     // FOTO
     photoFrame.style.left = CARD.photo.left * esc + "px";
@@ -103,7 +113,7 @@ function ajustarFoto() {
 
     photo.onload = function () {
 
-        const esc = 380 / CARD.width;
+        const esc = getEsc();
         const frameW = CARD.photo.width * esc;
         const frameH = CARD.photo.height * esc;
 
@@ -157,7 +167,7 @@ function atualizarCategoria() {
 // -------------------------------
 function ajustarFontePreview(elemento, texto, fontSize, maxWidth, weight) {
 
-    const esc = 380 / CARD.width;
+    const esc = getEsc();
     const largura = maxWidth * esc;
 
     elemento.textContent = texto.toUpperCase();
