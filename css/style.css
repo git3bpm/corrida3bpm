@@ -1,0 +1,266 @@
+* {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body {
+
+    background: #0b1220;
+    font-family: Segoe UI;
+    color: white;
+
+}
+
+.container {
+
+    display: grid;
+
+    grid-template-columns: 380px 1fr;
+
+    min-height: 100vh;
+
+}
+
+.sidebar {
+
+    background: #141d2b;
+
+    padding: 40px;
+
+    box-shadow: 0 0 30px rgba(0, 0, 0, .35);
+
+    z-index: 10;
+
+}
+
+.logo {
+
+    width: 80px;
+
+    display: block;
+
+    margin: auto;
+
+    margin-bottom: 20px;
+
+}
+
+.sidebar h1 {
+
+    text-align: center;
+
+    margin-bottom: 10px;
+
+}
+
+.sidebar p {
+
+    text-align: center;
+
+    opacity: .7;
+
+    margin-bottom: 35px;
+
+}
+
+.upload-area {
+
+    height: 180px;
+
+    border: 3px dashed #357dff;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.upload-area:hover {
+
+    background: #1c2940;
+
+}
+
+.upload-area span {
+
+    font-size: 50px;
+
+}
+
+.upload-area h3 {
+
+    margin-top: 10px;
+
+}
+
+label {
+
+    display: block;
+
+    margin-top: 25px;
+
+    font-weight: 600;
+
+}
+
+input,
+select {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+}
+
+button {
+
+    width: 100%;
+
+    margin-top: 35px;
+
+    padding: 18px;
+
+    background: #156dff;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-size: 18px;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+button:hover {
+
+    transform: translateY(-2px);
+
+}
+
+.preview-area {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px;
+
+    overflow: auto;
+
+}
+
+#card {
+
+    position: relative;
+
+    width: 380px;
+
+}
+
+#background {
+
+    width: 100%;
+
+    display: block;
+
+}
+
+#photoFrame {
+
+    position: absolute;
+
+    overflow: hidden;
+
+    background: #000;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+#photo {
+
+    position: absolute;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+}
+
+#namePreview {
+
+    position: absolute;
+
+    text-align: center;
+
+    font-weight: 700;
+
+    font-style: italic;
+
+    text-transform: uppercase;
+
+    color: white;
+
+}
+
+#categoryPreview {
+
+    position: absolute;
+
+    text-align: center;
+
+    font-weight: 700;
+
+    color: #ffd54a;
+
+    text-transform: uppercase;
+
+}
+
+@media(max-width:900px) {
+
+    .container {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .sidebar {
+
+        padding: 25px;
+        804x767
+    }
+
+}

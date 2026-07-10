@@ -4,13 +4,13 @@ const CARD = {
 
     photo: {
 
-        left: 71,
+        left: 138,
 
-        top: 381,
+        top: 594,
 
-        width: 938,
+        width: 804,
 
-        height: 1194
+        height: 767
 
     },
 
